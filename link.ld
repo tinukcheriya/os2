@@ -1,7 +1,8 @@
 ENTRY(loader)               
 
 SECTIONS {
-    . = 0x00100000;        
+    . = 0x00100000;
+    kernelstart = . - 0x00100000;
 
     .text ALIGN (0x1000) :   
     {
@@ -23,4 +24,5 @@ SECTIONS {
         *(COMMON)            
         *(.bss)              
     }
+    kernelend = . ;
 }

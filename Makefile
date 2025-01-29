@@ -1,4 +1,4 @@
-    OBJECTS = loader.o kmain.o io.o segmentation.o  gdt.o interrupts.o interrupt_handler.o pic.o keyboard.o idt.o 
+    OBJECTS = loader.o kmain.o io.o segmentation.o  gdt.o interrupts.o interrupt_handler.o pic.o keyboard.o idt.o kheap.o paging.o
     CC = gcc
     CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
              -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
@@ -25,7 +25,8 @@
                     iso
 
     run: os.iso
-	qemu-system-i386 -cdrom os.iso -m 512 -serial file:com1.out
+	qemu-system-i386 -cdrom os.iso -m 512 -serial file:com1.out 
+ 
 
     %.o: %.c
 	$(CC) $(CFLAGS)  $< -o $@

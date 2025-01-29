@@ -16,6 +16,7 @@ void serial_configure_fifo_buffer(unsigned short com);
 void serial_configure_modem(unsigned short com);
 int serial_is_transmit_fifo_empty(unsigned short com);
 int serial_write(unsigned short com,char buf);
+int serial_writeword(unsigned short com,char *buf,int len);
 void serial_write_byte(unsigned short com,char bytedata);
 void serial_configure(unsigned short com,unsigned short baudrate);
 

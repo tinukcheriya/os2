@@ -39,6 +39,22 @@ int serial_write(unsigned short com,char buf)
     //}
     return 0;
 }
+int serial_writeword(unsigned short com,char *buf,int len)
+{
+    serial_configure(com,divi);
+     int ibf=0;
+    while(ibf<len)
+    { 
+        if(serial_is_transmit_fifo_empty(com)){
+            serial_write_byte(com,buf[ibf]);
+            ibf++;
+            
+            //ibf++;
+
+        }
+    }
+    return 0;
+}
 void serial_write_byte(unsigned short com,char bytedata)
 {
     outb(com,bytedata);
