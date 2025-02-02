@@ -5,6 +5,7 @@
 #include "interrupts.h"
 #include "paging.h"
 #include "multiboot.h"
+#include "kheap.h"
 static unsigned int read_cr3() {
     unsigned int value;
     asm volatile ("mov %%cr3, %0" : "=r" (value));
@@ -21,7 +22,7 @@ void int_to_hex(unsigned int value, char *buffer) {
     buffer[10] = '\0'; // Null-terminate the string
 }
 
-void kmain(unsigned int kernelend)
+void kmain()
 { 
     //char msg[4]="MYOS";
     //for(int i=0;i<4;i++)
@@ -35,7 +36,9 @@ void kmain(unsigned int kernelend)
     
     //unsigned char a[8];
     segments_install_gdt();
-    init_paging(kernelend);
+    //setphysicaladdresstop(kernelend);
+    create_heap(0x01546473, 0xd000000,0xd0000000);
+    init_paging();
 
     unsigned int y=read_cr3();
     char hex_str[11];  // Buffer for "0xXXXXXXXX" + NULL
@@ -43,7 +46,7 @@ void kmain(unsigned int kernelend)
     int_to_hex(y, hex_str);
 
       serial_writeword(0x3f8,hex_str,10);
-      volatile unsigned int *p=(unsigned int*)0x0000000;
+      volatile unsigned int *p=(unsigned int*)0x000000;
       unsigned int valu=*p;
       char hex_sr[11];
       int_to_hex(valu, hex_sr);

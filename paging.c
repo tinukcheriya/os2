@@ -87,9 +87,9 @@ void custom_memset(u8int *address,u32int val,u32int size)
     ++address;
     }
 }
-void init_paging(u32int kernalphysicalend)
+void init_paging()
 {
-   setphysicaladdresstop(kernalphysicalend); 
+   //setphysicaladdresstop(kernalphysicalend); 
 
 u32int mem_end=0x1000000;
 nframes=mem_end/0x1000;

@@ -7,9 +7,9 @@ typedef short s16int;
 typedef unsigned char u8int;
 typedef char s8int;
 
-void setphysicaladdresstop(u32int physicaladdress);
-
-u32int kmalloc_int(u32int size,u32int align,u32int *ptr);
+//void setphysicaladdresstop(u32int physicaladdress);
+void create_heap(u32int startaddr, u32int endaddr, u32int maxaddr);
+u32int kmalloc_int(u32int size,u8int align,u32int *ptr);
 
 u32int kmalloc_a(u32int size);
 

@@ -33,7 +33,7 @@ typedef struct pagedir
     u32int phyaddre;
 }pagedir_t;
 
-void init_paging(u32int kernelphyend);
+void init_paging();
 void switchpagedir(pagedir_t *new);
 page_t *get_page(u32int address,u8int make,pagedir_t *dir);
 #endif
