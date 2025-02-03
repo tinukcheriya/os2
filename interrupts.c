@@ -4,8 +4,10 @@
 #include "framebuffer.c"
 #include "keyboard.h"
 #include "serial_port.c"
+#include "paging.h"
 
-
+extern u32int phyaddtop;
+extern pagedir_t *cdir;
 struct IDTDescriptor idt_descriptors[256];
 struct IDT idt;
 
@@ -26,6 +28,7 @@ void interrupts_init_descriptor(int index, unsigned int address)
 void interrupts_install_idt()
 {
 	interrupts_init_descriptor(33, (unsigned int) interrupt_handler_33);
+	interrupts_init_descriptor(14, (unsigned int) interrupt_handler_14);
 
 
 	idt.address = (int) &idt_descriptors;
@@ -67,6 +70,16 @@ void interrupt_handler(__attribute__((unused)) struct cpu_state cpu, unsigned in
 			pic_acknowledge(interrupt);
 
 			break;
+			case 14:
+				fb_write('l',1);
+				u32int i=0;
+				while(i<phyaddtop)
+					{
+ 
+    					alloc_frame(get_page(i,1,cdir),0,0);
+    					i+=0x1000;
+
+					}
 
 		default:
 			break;

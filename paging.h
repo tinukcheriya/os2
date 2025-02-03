@@ -32,7 +32,7 @@ typedef struct pagedir
     u32int tablesaddr[1024];
     u32int phyaddre;
 }pagedir_t;
-
+void alloc_frame(page_t *page,u32int isKernel,u32int isWriteable);
 void init_paging();
 void switchpagedir(pagedir_t *new);
 page_t *get_page(u32int address,u8int make,pagedir_t *dir);

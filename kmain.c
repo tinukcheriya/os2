@@ -38,6 +38,7 @@ void kmain()
     segments_install_gdt();
     //setphysicaladdresstop(kernelend);
     create_heap(0x01546473, 0xd000000,0xd0000000);
+    interrupts_install_idt();
     init_paging();
 
     unsigned int y=read_cr3();
@@ -63,7 +64,7 @@ void kmain()
 
     
 
-    interrupts_install_idt();
+    
     //scancode = keyboard_read_scan_code();
     //ascii = keyboard_scan_code_to_ascii(scancode);
     //asciicode[0] = ascii;

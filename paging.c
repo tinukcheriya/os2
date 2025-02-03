@@ -1,6 +1,7 @@
 #include "paging.h"
 #include "kheap.h"
 #include "interrupts.h"
+#include "framebuffer.h"
 
 pagedir_t *kdir=0;
 pagedir_t *cdir=0;
@@ -31,12 +32,14 @@ static void clear_frame(u32int frameadd)
 static s32int first_frame()
 {
     u32int i,j;
-    for(i=0;i<(index(nframes));i++)
+    for(i=0;i<=(index(nframes));i++)
+
     {
+        if(frames[i]!=0xFFFFFFFF)
+            {
         for(j=0;j<32;j++)
         {
-            if(frames[i]!=0xFFFFFFFF)
-            {
+            
                 if(!((0x1<<j)&frames[i]))
                 {
                     return (i*32+j);
@@ -60,6 +63,7 @@ void alloc_frame(page_t *page,u32int isKernel,u32int isWriteable)
         {
             while(1);
         }
+        fb_write('h',2);
         set_frame(idx*0x1000);
         page->present=1;
         page->rw=(isWriteable)?1:0;
@@ -97,15 +101,10 @@ frames=(u32int *)kmalloc(index(nframes)+1);
 custom_memset((u8int *)frames,0,index(nframes));
 kdir=(pagedir_t *)kmalloc_a(sizeof(pagedir_t));
 cdir=kdir;
+if(!get_page(0,0,cdir))
+asm volatile("int $0x0e");
 
-u32int i=0;
-while(i<phyaddtop)
-{
- 
-    alloc_frame(get_page(i,1,cdir),0,0);
-    i+=0x1000;
 
-}
 switchpagedir(kdir);
 }
 
